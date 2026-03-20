@@ -10,12 +10,15 @@ The package currently supports the following operations:
 - Concatenating various csv files of the same format into a single dataframe
 
 ## Installation
-Install the package:
 ```bash
 pip3 install frameready 
 ``` 
 
 ## Import
+```python
+import frameready as fr
+```
+Alternatively, import specific functions
 ```python
 from frameready import update_dtypes, transform_datetime, handle_missing
 ```
@@ -38,7 +41,7 @@ Additional support for inferring/generating schema, encoding dummies, and summar
 
 
 ### Schema usage
-**Dtype schema**
+#### Dtype schema
 For updating dtypes, specify the data type for each column in the dataframe for which you would like to change the data type. The binary and ordinal categorical ("ordinal_cat") data types require additional arguments for how you would like the transformation to be performed.
 
 Default mappings to datetime and raw pandas dtypes are also supported.
@@ -55,7 +58,8 @@ schema = {
     'Height (cm)' : "float"
 }
 ```
-**Datetime schema**
+
+#### Datetime schema
 For updating datetime data types, specify the method for each column in the dataframe for which you would like to change the data type. The duration, extract, after, and bin methods require additional arguments related to the tranformation, including arguments such as time units, reference date, threshold, and—in the case of bin, which bins the data into categories based on cut-offs—bins and labels.
 
 ```python
@@ -77,7 +81,7 @@ schema5 = {
 
 ```
 
-**Missing schema**
+#### Missing schema
 For handling missing values, specify the method for each column in the dataframe for which you would like to fill/remove/impute missing values. The string method requires an additional arguments `defaultstring` that will replace any missing values in the column.
 
 - An `ffill = True` argument can be specified to forward-fill <ins>all</ins> empty rows in the dataframe with the value in the same column in the closest preceding non-empty row. This is especially useful for panel/time-series data, or datasets imported from excel files with merged cells.

@@ -25,4 +25,4 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/romakouz/frameready"
+Repository = "https://github.com/yourusername/frameready"

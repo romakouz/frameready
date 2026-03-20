@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "frameready"
+version = "0.1.0"
+authors = [
+  { name="Roman Kouznetsov", email="romankouz@gmail.com" },
+]
+description = "A small library of preprocessing utilities for pandas DataFrames"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pyright",
+]
+
+[project.urls]
+Homepage = "https://github.com/romakouz/frameready"

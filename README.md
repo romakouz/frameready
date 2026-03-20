@@ -10,6 +10,11 @@ The package currently supports the following operations:
 - Concatenating various csv files of the same format into a single dataframe
 
 ## Installation
+Install directly from github:
+```bashpip
+install git+https://github.com/romakouz/frameready.git
+```
+*(Not yet available)* Install published package
 ```bash
 pip3 install frameready 
 ``` 

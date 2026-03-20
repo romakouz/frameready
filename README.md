@@ -9,17 +9,18 @@ The package currently supports the following operations:
 - Handling simple missing value scenarios (record deletion, imputation, reformatting from merged excel files)
 - Concatenating various csv files of the same format into a single dataframe
 
-## Installation
+### Getting Started
+### Installation
 Install directly from github:
-```bashpip
-install git+https://github.com/romakouz/frameready.git
+```bash
+pip install git+https://github.com/romakouz/frameready.git
 ```
 *(Not yet available)* Install published package
 ```bash
-pip3 install frameready 
+pip install frameready 
 ``` 
 
-## Import
+### Import
 ```python
 import frameready as fr
 ```
@@ -28,8 +29,51 @@ Alternatively, import specific functions
 from frameready import update_dtypes, transform_datetime, handle_missing
 ```
 
+### Quick Start
+```python
+from frameready import update_dtypes, transform_datetime, handle_missing
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    'DOB'        : ['1950-03-23', '1978-12-21', '1989-04-05', '1999-06-17'],
+    'Steatosis'  : [0, 3, 2, 1],
+    'Race'       : ["Asian", "Caucasian", pd.NA, "African-American"],
+    'Sex'        : ["Male", "Female", "Male", "Male"],
+    'Deceased'   : ["2000-01-01", "No", "No", None],
+    'PATId'      : ["PAT1", "PAT2", "PAT3", "PAT4"],
+    'Weight (kg)': ["72.2 kg", np.nan, "63.8 kg", "43.1kg"],
+    'Height (cm)': [180.1, 189.7, 140.3, 128.9]
+})
+
+dtype_schema = {
+    'DOB'        : "datetime",
+    'Steatosis'  : "ordinal",
+    'Race'       : "categorical",
+    'Sex'        : ("binary", "Female"),
+    'Deceased'   : ("binary", lambda x: x != "No"),
+    'PATId'      : "id",
+    'Weight (kg)': "continuous",
+    'Height (cm)': "float"
+}
+datetime_schema = {
+    'DOB' : ("bin", [0,18,35,50,75,200], ["0-18","18-35","35-50","50-75","75+"], "year", "2010-01-01")
+}
+missing_schema = {
+    'Race'       : ("string", "Other"),
+    'Weight (kg)': "median",
+    'Deceased'   : "drop",
+    'Steatosis'  : "zero"
+}
+
+df = update_dtypes(df, dtype_schema, force_string_to_numeric=True)
+df = transform_datetime(df, schema=datetime_schema)
+df = handle_missing(df, schema=missing_schema)
+df.head()
+```
+
 ## Usage
-This package currently only offers support for pandas dataframes, and functions primarliy by declaring schema specifying the various transformations to be performed on each column.
+This package currently only offers support for pandas dataframes, and functions primarily by declaring schema specifying the various transformations to be performed on each column.
 
 Guidance and examples on defining schema are provided in [Schema usage](#schema-usage).
 Example code is provided [here](tests/test_core.py)
@@ -40,7 +84,7 @@ After loading a dataset as a pandas dataframe and inspecting the dtypes and data
 1. Update column data types using `update_dtypes()` and a dtype schema.
 2. Update any datetime objects using `transform_datetime()` and a datetime schema.
 3. Update missing values using `handle_missing()` and a missing value method schema.
-4. Visualize the updated dataframe to confirm transformations were perfomed as expected.
+4. Visualize the updated dataframe to confirm transformations were performed as expected.
 
 Additional support for inferring/generating schema, encoding dummies, and summarizing features will be provided in future versions (see [Future Support](#future-support))
 
@@ -114,5 +158,4 @@ schema = {
 - more missing data imputation options (kNN, etc.)
 - better dataset view/summary options, pre- and post-preprocessing
 
-I essentially add to this package whenever I encounter a preprocessing task which is sufficiently repetitive and general while performing statistical analysis. 
-Therefore, this package will be continuously enriched as I encounter new scenarios for simplifying code (time permitting, of course).
+This package is actively being maintained and updated as new preprocessing tasks arise that are sufficiently repetitive and general while performing statistical analysis. 
